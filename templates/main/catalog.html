@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Каталог направлений | Странник{% endblock %}
+
+{% block extra_head %}
+<style>
+  .catalog-title {
+    text-align: center;
+    margin-top: 0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="catalog-title">Каталог направлений</h1>
+
+<div class="catalog">
+  <div class="card">
+    <h3>Катана</h3>
+    <img src="{% static 'main/assets/katana.jpg' %}" alt="Катана" width="150">
+    <p>Изучение базовых стоек, рубящих движений, контроля дистанции и культуры работы с японским мечом.</p>
+  </div>
+
+  <div class="card">
+    <h3>Нагината</h3>
+    <img src="{% static 'main/assets/naginata.jpg' %}" alt="Нагината" width="150">
+    <p>Практика длинного древкового оружия, развитие координации, точности и правильного перемещения в бою.</p>
+  </div>
+
+  <div class="card">
+    <h3>Одати</h3>
+    <img src="{% static 'main/assets/odachi.jpg' %}" alt="Одати" width="150">
+    <p>Освоение техники работы с длинным мечом, внимания к балансу, силе движения и дисциплине исполнения.</p>
+  </div>
+</div>
+
+<section>
+  <h2>Дополнительно</h2>
+  <p>
+    На этой странице представлен каталог направлений обучения в виде карточек.
+    Здесь используются классы, внешние стили, анимация и эффекты наведения.
+  </p>
+  <p><a href="{% url 'main:index' %}">Вернуться на главную</a></p>
+</section>
+{% endblock %}

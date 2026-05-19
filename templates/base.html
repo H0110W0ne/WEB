@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Странник{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body id="top">
+
+<header class="site-header">
+    <div class="logo">Странник — школа восточного фехтования</div>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">☰</label>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="{% url 'main:index' %}">Главная</a></li>
+            <li><a href="{% url 'main:catalog' %}">Каталог</a></li>
+            <li><a href="{% url 'main:contacts' %}">Контакты</a></li>
+            {% if request.user.is_authenticated %}
+                <li><span class="user-badge">Вы вошли как: {{ request.user.get_full_name|default:request.user.username }}</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>© 2026 Странник — школа восточного фехтования</p>
+</footer>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

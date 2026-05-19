@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Странник | Школа восточного фехтования{% endblock %}
+
+{% block extra_head %}
+<style>
+  h1 {
+    color: #2f4f4f;
+    text-align: center;
+  }
+
+  .main-subtitle {
+    text-align: center;
+    font-size: 18px;
+  }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'main/js/comments.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Добро пожаловать в школу восточного фехтования</h1>
+
+  <p class="main-subtitle">
+    <strong>Странник</strong> — место, где каждый может прикоснуться к философии боевого искусства древней Японии.
+    <span>На этом сайте</span> можно узнать о нашей школе, выбрать понравившееся направление и записаться на занятия.
+  </p>
+
+  <p class="info-box" style="margin-bottom: 10px;">
+    <em>«Всю свою жизнь прилежно учись.<br>
+      Каждый день становись более искусным, чем ты был за день до этого, а на следующий день — более искусным, чем сегодня.<br>
+      Совершенствование не имеет конца.»</em>
+  </p>
+
+  <div class="intro">
+    <strong>Бусидо.</strong>
+  </div>
+</section>
+
+<section id="history">
+  <h2>О школе и традиции восточного фехтования</h2>
+
+  <p>
+    Школа «Странник» предоставляет возможность прикоснуться к философии и практике восточного фехтования,
+    не покидая родной город.
+  </p>
+
+  <h3>Наша школа обучает фехтованию следующими видами холодного оружия:</h3>
+  <ul>
+    <li>Катана / вакидзаси</li>
+    <li>Одати</li>
+    <li>Нагината</li>
+  </ul>
+
+  <h4>Этапы обучения</h4>
+  <ol>
+    <li>Освоение базовых ударов</li>
+    <li>Освоение базового перемещения</li>
+    <li>Изучение стоек</li>
+    <li>Отработка кат</li>
+    <li>Спарринг</li>
+  </ol>
+
+  <h5>Мы уважаем традиции и обычаи</h5>
+  <p>Поэтому наши тренировки проходят с соблюдением правил и ритуалов, принятых в японских школах боевых искусств.</p>
+
+  <h6>Запись в школу открыта</h6>
+  <p>
+    Если вы хотите закалить себя, расширить кругозор и прикоснуться к чему-то великому и завораживающему,
+    не упускайте эту возможность.
+  </p>
+</section>
+
+<section class="photo-block">
+  <h2>Полное обмундирование самурая</h2>
+  <img src="{% static 'main/assets/ht006782.jpg' %}" alt="Изображение самурая" width="220">
+</section>
+
+<section id="media" class="media-block">
+  <h2>Капелька Японии</h2>
+  <video width="420" controls>
+    <source src="{% static 'main/assets/Japan.mp4' %}" type="video/mp4">
+    Ваш браузер не поддерживает видео.
+  </video>
+</section>
+
+<section class="comments-section">
+  <h2>Комментарии посетителей</h2>
+  <p>
+    Эта форма отправляет комментарий через <strong>WebSocket</strong> в формате JSON без перезагрузки страницы.
+    Новые комментарии мгновенно появляются у всех открытых клиентов без F5.
+  </p>
+
+  <form id="comment-form" class="comment-form" data-ws-url="/ws/comments/" novalidate>
+    {% csrf_token %}
+
+    {% if not request.user.is_authenticated %}
+      <div class="form-field">
+        <label for="comment-author">Ваше имя *</label>
+        <input id="comment-author" name="authorName" type="text" placeholder="Например: Иван" required>
+        <small class="field-message" id="comment-author-message"></small>
+      </div>
+    {% else %}
+      <p class="comment-author-fixed">
+        Комментарий будет отправлен от имени:
+        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+      </p>
+    {% endif %}
+
+    <div class="form-field">
+      <label for="comment-text">Комментарий *</label>
+      <textarea id="comment-text" name="text" placeholder="Напишите ваше мнение о школе" required></textarea>
+      <small class="field-message" id="comment-text-message"></small>
+    </div>
+
+    <button type="submit" id="comment-submit">Отправить комментарий</button>
+    <p id="comment-result" class="form-result"></p>
+    <p id="socket-status" class="field-hint">Подключение WebSocket...</p>
+  </form>
+
+  <div id="comments-list" class="comments-list">
+    {% for comment in comments %}
+      <article class="comment-card" data-comment-id="{{ comment.id }}">
+        <div class="comment-meta">
+          <strong>{{ comment.author_display }}</strong>
+          <span>{{ comment.created_at|date:'d.m.Y H:i:s' }}</span>
+        </div>
+        <p>{{ comment.text }}</p>
+      </article>
+    {% empty %}
+      <p id="comments-empty">Пока комментариев нет. Будьте первым.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section>
+  <h2>Полезные переходы</h2>
+  <p><a href="{% url 'main:catalog' %}">Перейти в каталог направлений</a></p>
+  <p><a href="{% url 'main:contacts' %}">Перейти на страницу контактов</a></p>
+  <p><a href="#top">Наверх страницы</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Контакты и регистрация | Странник{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'main/js/script.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<h1>Контакты школы</h1>
+
+<p>Свяжитесь с нами, чтобы узнать о расписании, пробных занятиях и наборе в группы.</p>
+
+<ul>
+  <li>Email: strannik-dojo@mail.com</li>
+  <li>Телефон: +7 900 123 45 67</li>
+  <li>Адрес: ул. Воинского пути, 10</li>
+</ul>
+
+<section id="form-section">
+  <h2>Форма регистрации на занятие</h2>
+  <p>Лабораторная работа №5: форма создаёт пользователя Django в базе данных, пароль сохраняется в хешированном виде, а уведомление отправляется в Telegram.</p>
+
+  <form
+    id="registration-form"
+    action="{% url 'main:contacts' %}"
+    method="post"
+    novalidate
+    data-api-url="{% url 'main:api_registration' %}"
+  >
+    {% csrf_token %}
+
+    <div class="form-field">
+      <label for="firstName">Имя *</label>
+      <input id="firstName" name="firstName" type="text" placeholder="Например: Иван" value="{{ submitted_data.firstName|default:'' }}" required>
+      <small class="field-hint">Только буквы. Первая буква заглавная, остальные строчные.</small>
+      <small class="field-message{% if server_errors.firstName %} error{% endif %}" id="firstName-message">{{ server_errors.firstName|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="lastName">Фамилия *</label>
+      <input id="lastName" name="lastName" type="text" placeholder="Например: Петров" value="{{ submitted_data.lastName|default:'' }}" required>
+      <small class="field-hint">Только буквы. Первая буква заглавная, остальные строчные.</small>
+      <small class="field-message{% if server_errors.lastName %} error{% endif %}" id="lastName-message">{{ server_errors.lastName|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email *</label>
+      <input id="email" name="email" type="email" placeholder="example@mail.com" value="{{ submitted_data.email|default:'' }}" required>
+      <small class="field-hint">Email станет логином пользователя в Django.</small>
+      <small class="field-message{% if server_errors.email %} error{% endif %}" id="email-message">{{ server_errors.email|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="phone">Телефон *</label>
+      <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" value="{{ submitted_data.phone|default:'' }}" required>
+      <small class="field-hint">Формат: +7 (999) 123-45-67</small>
+      <small class="field-message{% if server_errors.phone %} error{% endif %}" id="phone-message">{{ server_errors.phone|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="age">Возраст *</label>
+      <input id="age" name="age" type="number" min="10" max="70" placeholder="От 10 до 70" value="{{ submitted_data.age|default:'' }}" required>
+      <small class="field-hint">Допустимый возраст: от 10 до 70 лет.</small>
+      <small class="field-message{% if server_errors.age %} error{% endif %}" id="age-message">{{ server_errors.age|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="direction">Направление *</label>
+      <select id="direction" name="direction" required>
+        <option value="">Выберите направление</option>
+        {% for direction in directions %}
+          <option value="{{ direction.slug }}" {% if submitted_data.direction == direction.slug %}selected{% endif %}>{{ direction.name }}</option>
+        {% endfor %}
+      </select>
+      <small class="field-hint">Направления хранятся в отдельной модели базы данных.</small>
+      <small class="field-message{% if server_errors.direction %} error{% endif %}" id="direction-message">{{ server_errors.direction|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="password">Пароль *</label>
+      <input id="password" name="password" type="password" minlength="8" maxlength="128" placeholder="Минимум 8 символов" required>
+      <small class="field-hint">Пароль не хранится в открытом виде: Django сохраняет его как хеш.</small>
+      <small class="field-message{% if server_errors.password %} error{% endif %}" id="password-message">{{ server_errors.password|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="confirmPassword">Подтверждение пароля *</label>
+      <input id="confirmPassword" name="confirmPassword" type="password" minlength="8" maxlength="128" placeholder="Повторите пароль" required>
+      <small class="field-hint">Пароли должны совпадать.</small>
+      <small class="field-message{% if server_errors.confirmPassword %} error{% endif %}" id="confirmPassword-message">{{ server_errors.confirmPassword|default:'' }}</small>
+    </div>
+
+    <div class="form-field">
+      <label for="message">Комментарий</label>
+      <textarea id="message" name="message" placeholder="Напишите, каким оружием хотите заниматься и есть ли опыт">{{ submitted_data.message|default:'' }}</textarea>
+      <small class="field-hint">Поле необязательное.</small>
+      <small class="field-message{% if server_errors.message %} error{% endif %}" id="message-message">{{ server_errors.message|default:'' }}</small>
+    </div>
+
+    <button type="submit">Зарегистрироваться</button>
+    <p id="form-result" class="form-result{% if server_result_type %} {{ server_result_type }}{% endif %}">{{ server_result|default:'' }}</p>
+    {% if telegram_error %}
+      <p class="form-result error">Техническая причина: {{ telegram_error }}</p>
+    {% endif %}
+  </form>
+</section>
+
+<section>
+  <h2>Навигация</h2>
+  <p><a href="{% url 'main:index' %}">На главную</a></p>
+  <p><a href="{% url 'main:catalog' %}">В каталог направлений</a></p>
+  <p><a href="#top">Наверх страницы</a></p>
+</section>
+{% endblock %}
