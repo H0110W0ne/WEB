@@ -14,7 +14,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
@@ -74,3 +74,30 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install SSH client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-client
+
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.YC_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.YC_PORT }}" "${{ secrets.YC_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy to Yandex Cloud VM
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p "${{ secrets.YC_PORT }}" "${{ secrets.YC_USER }}@${{ secrets.YC_HOST }}" '
+            cd /opt/strannik &&
+            docker compose -f compose.prod.yaml pull &&
+            docker compose -f compose.prod.yaml up -d --no-build &&
+            docker image prune -f
+          '
