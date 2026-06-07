@@ -13,7 +13,9 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="catalog-title">Каталог направлений</h1>
+<section class="page-heading content-card content-card-accent">
+  <h1 class="catalog-title">Каталог направлений</h1>
+</section>
 
 <div class="catalog">
   <div class="card">
@@ -35,12 +37,8 @@
   </div>
 </div>
 
-<section>
+<section class="content-card">
   <h2>Дополнительно</h2>
-  <p>
-    На этой странице представлен каталог направлений обучения в виде карточек.
-    Здесь используются классы, внешние стили, анимация и эффекты наведения.
-  </p>
   <p><a href="{% url 'main:index' %}">Вернуться на главную</a></p>
 </section>
 {% endblock %}
