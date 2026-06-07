@@ -2,12 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('comment-form');
   const commentsList = document.getElementById('comments-list');
   const result = document.getElementById('comment-result');
-  const submitButton = document.getElementById('comment-submit');
   const socketStatus = document.getElementById('socket-status');
 
   if (!form || !commentsList) {
     return;
   }
+
+  const submitButton =
+    document.getElementById('comment-submit') ||
+    form.querySelector('button[type="submit"]');
 
   const authorInput = document.getElementById('comment-author');
   const textInput = document.getElementById('comment-text');
@@ -17,7 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let socket = null;
 
   function setResult(text, type = '') {
-    result.textContent = text;
+    if (!result) {
+      return;
+    }
+    result.textContent = text || '';
     result.className = 'form-result';
     if (type) {
       result.classList.add(type);
@@ -28,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!element) {
       return;
     }
-    element.textContent = text;
+    element.textContent = text || '';
     element.className = 'field-message';
     if (type) {
       element.classList.add(type);
@@ -39,10 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!socketStatus) {
       return;
     }
-    socketStatus.textContent = text;
+    socketStatus.textContent = text || '';
     socketStatus.className = 'field-hint';
     if (type) {
       socketStatus.classList.add(type);
+    }
+  }
+
+  function setSubmitState(disabled, label) {
+    if (!submitButton) {
+      return;
+    }
+    submitButton.disabled = disabled;
+    if (label) {
+      submitButton.textContent = label;
     }
   }
 
@@ -57,11 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return false;
     }
 
-    setFieldMessage(authorMessage, 'Имя автора указано.', 'success');
+    setFieldMessage(authorMessage, '');
     return true;
   }
 
   function validateText() {
+    if (!textInput) {
+      return false;
+    }
+
     const value = textInput.value.trim();
     if (value.length < 2) {
       setFieldMessage(textMessage, 'Комментарий должен содержать минимум 2 символа.', 'error');
@@ -73,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return false;
     }
 
-    setFieldMessage(textMessage, 'Комментарий готов к отправке.', 'success');
+    setFieldMessage(textMessage, '');
     return true;
   }
 
@@ -87,6 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderComment(comment) {
+    if (!comment || !comment.id) {
+      return;
+    }
+
     if (commentsList.querySelector(`[data-comment-id="${comment.id}"]`)) {
       return;
     }
@@ -113,17 +137,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function connectSocket() {
     const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
     socket = new WebSocket(`${scheme}://${window.location.host}${wsPath}`);
+    setSocketStatus('Подключение WebSocket...');
 
     socket.addEventListener('open', () => {
-      submitButton.disabled = false;
-      setSocketStatus('WebSocket подключён. Комментарии приходят в реальном времени.', 'success');
+      setSubmitState(false, 'Отправить комментарий');
+      setSocketStatus('Соединение установлено.', 'success');
     });
 
     socket.addEventListener('message', (event) => {
       const data = JSON.parse(event.data);
 
       if (data.event === 'socket_ready') {
-        setSocketStatus(data.detail, 'success');
+        setSocketStatus(data.detail || 'Соединение установлено.', 'success');
         return;
       }
 
@@ -133,25 +158,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (data.event === 'comment_saved') {
-        textInput.value = '';
-        setFieldMessage(textMessage, '', '');
+        if (textInput) {
+          textInput.value = '';
+        }
+        setFieldMessage(textMessage, '');
         setResult(data.detail || 'Комментарий отправлен.', 'success');
+        setSubmitState(false, 'Отправить комментарий');
         return;
       }
 
       if (data.event === 'comment_error') {
         setResult(data.detail || 'Не удалось отправить комментарий.', 'error');
+
         if (data.errors?.authorName) {
           setFieldMessage(authorMessage, data.errors.authorName, 'error');
         }
+
         if (data.errors?.text) {
           setFieldMessage(textMessage, data.errors.text, 'error');
         }
+
+        setSubmitState(false, 'Отправить комментарий');
       }
     });
 
     socket.addEventListener('close', () => {
-      submitButton.disabled = true;
+      setSubmitState(true, 'Подключение...');
       setSocketStatus('WebSocket отключён. Идёт переподключение...', 'error');
       window.setTimeout(connectSocket, 1500);
     });
@@ -164,13 +196,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (authorInput) {
     authorInput.addEventListener('input', validateAuthor);
   }
-  textInput.addEventListener('input', validateText);
+
+  if (textInput) {
+    textInput.addEventListener('input', validateText);
+  }
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const authorValid = validateAuthor();
     const textValid = validateText();
+
     if (!authorValid || !textValid) {
       setResult('Исправьте ошибки в форме комментария.', 'error');
       return;
@@ -190,14 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     setResult('');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Отправка...';
+    setSubmitState(true, 'Отправка...');
     socket.send(JSON.stringify(payload));
-    window.setTimeout(() => {
-      submitButton.disabled = false;
-      submitButton.textContent = 'Отправить комментарий';
-    }, 300);
   });
 
+  setSubmitState(true, 'Подключение...');
   connectSocket();
 });
