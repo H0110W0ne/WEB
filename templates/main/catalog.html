@@ -1,44 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Каталог направлений | Странник{% endblock %}
-
-{% block extra_head %}
-<style>
-  .catalog-title {
-    text-align: center;
-    margin-top: 0;
-  }
-</style>
-{% endblock %}
+{% block title %}Каталог — Странник{% endblock %}
 
 {% block content %}
-<section class="page-heading content-card content-card-accent">
-  <h1 class="catalog-title">Каталог направлений</h1>
+<section class="page-hero compact-hero">
+  <div class="container">
+    <span class="section-tag">Каталог</span>
+    <h1>Направления подготовки</h1>
+    <p class="hero-lead">
+      Три направления, оформленные как каталог реальной школы: с акцентом на подачу, визуал и читаемость.
+    </p>
+  </div>
 </section>
 
-<div class="catalog">
-  <div class="card">
-    <h3>Катана</h3>
-    <img src="{% static 'main/assets/katana.jpg' %}" alt="Катана" width="150">
-    <p>Изучение базовых стоек, рубящих движений, контроля дистанции и культуры работы с японским мечом.</p>
-  </div>
+<section id="programs" class="content-section">
+  <div class="container">
+    <div class="program-grid">
+      <article class="program-card glass-card">
+        <img src="{% static 'main/assets/katana.jpg' %}" alt="Катана">
+        <div class="program-body">
+          <span class="card-label">Базовое направление</span>
+          <h2>Катана</h2>
+          <p>
+            Основа для постановки движения, техники дистанции и уверенного контроля клинка.
+          </p>
+          <ul>
+            <li>Стойки и перемещения</li>
+            <li>Базовые рубящие траектории</li>
+            <li>Точность и ритм</li>
+          </ul>
+        </div>
+      </article>
 
-  <div class="card">
-    <h3>Нагината</h3>
-    <img src="{% static 'main/assets/naginata.jpg' %}" alt="Нагината" width="150">
-    <p>Практика длинного древкового оружия, развитие координации, точности и правильного перемещения в бою.</p>
-  </div>
+      <article class="program-card glass-card">
+        <img src="{% static 'main/assets/naginata.jpg' %}" alt="Нагината">
+        <div class="program-body">
+          <span class="card-label">Дистанция и амплитуда</span>
+          <h2>Нагината</h2>
+          <p>
+            Работа с длинным оружием развивает чувство пространства, тайминг и координацию корпуса.
+          </p>
+          <ul>
+            <li>Контроль дистанции</li>
+            <li>Баланс и ось движения</li>
+            <li>Работа по широкой траектории</li>
+          </ul>
+        </div>
+      </article>
 
-  <div class="card">
-    <h3>Одати</h3>
-    <img src="{% static 'main/assets/odachi.jpg' %}" alt="Одати" width="150">
-    <p>Освоение техники работы с длинным мечом, внимания к балансу, силе движения и дисциплине исполнения.</p>
-  </div>
-</div>
+      <article class="program-card glass-card">
+        <img src="{% static 'main/assets/odachi.jpg' %}" alt="Одати">
+        <div class="program-body">
+          <span class="card-label">Сила и структура</span>
+          <h2>Одати</h2>
+          <p>
+            Направление с акцентом на устойчивость, собранность и контроль инерции тяжёлого клинка.
+          </p>
+          <ul>
+            <li>Работа корпусом</li>
+            <li>Собранность и контроль силы</li>
+            <li>Чувство тяжести оружия</li>
+          </ul>
+        </div>
+      </article>
+    </div>
 
-<section class="content-card">
-  <h2>Дополнительно</h2>
-  <p><a href="{% url 'main:index' %}">Вернуться на главную</a></p>
+    <div class="glass-card catalog-note">
+      <h3>Как выбрать направление</h3>
+      <p>
+        Для первого занятия достаточно выбрать наиболее интересное направление — преподаватель поможет скорректировать путь на практике.
+      </p>
+      <a class="button button-secondary" href="{% url 'main:contacts' %}#registration">Перейти к записи</a>
+    </div>
+  </div>
 </section>
 {% endblock %}
