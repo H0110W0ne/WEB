@@ -99,5 +99,6 @@ jobs:
             cd /opt/strannik &&
             docker compose -f compose.prod.yaml pull &&
             docker compose -f compose.prod.yaml up -d --no-build &&
+            docker compose -f compose.prod.yaml restart nginx &&
             docker image prune -f
           '
