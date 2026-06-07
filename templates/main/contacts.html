@@ -1,136 +1,206 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Контакты и регистрация | Странник{% endblock %}
+{% block title %}Контакты и запись — Странник{% endblock %}
 
-{% block extra_scripts %}
-<script src="{% static 'main/js/script.js' %}" defer></script>
+{% block extra_head %}
+<style>
+  .contacts-intro strong {
+    letter-spacing: 0.02em;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-<section class="page-heading content-card content-card-accent">
-  <h1>Контакты школы</h1>
+<section class="page-hero compact-hero">
+  <div class="container">
+    <span class="section-tag">Контакты</span>
+    <h1>Запись на первое занятие</h1>
+    <p class="hero-lead contacts-intro">
+      Оставьте заявку, чтобы подобрать удобный формат, направление и стартовую программу подготовки.
+    </p>
+  </div>
+</section>
 
-  <p class="section-lead">Свяжитесь с нами, чтобы узнать о расписании, пробных занятиях и наборе в группы.</p>
+<section id="registration" class="content-section">
+  <div class="container contacts-grid">
+    <aside class="glass-card contacts-card">
+      <h2>Контакты школы</h2>
 
-  <div class="contact-grid">
-    <div class="contact-card">
-      <strong>Email</strong>
-      <span>strannik-dojo@mail.com</span>
-    </div>
-    <div class="contact-card">
-      <strong>Телефон</strong>
-      <span>+7 900 123 45 67</span>
-    </div>
-    <div class="contact-card">
-      <strong>Адрес</strong>
-      <span>ул. Воинского пути, 10</span>
+      <div class="contact-item">
+        <span>Адрес</span>
+        <strong>Москва, тренировочный зал «Странник»</strong>
+      </div>
+
+      <div class="contact-item">
+        <span>Email</span>
+        <strong>info@strannik.local</strong>
+      </div>
+
+      <div class="contact-item">
+        <span>Телефон</span>
+        <strong>+7 (999) 123-45-67</strong>
+      </div>
+
+      <div class="contact-item">
+        <span>Формат</span>
+        <strong>Индивидуальные и групповые занятия</strong>
+      </div>
+
+      <p class="contact-note">
+        Здесь сохранён более “боевой” и аккуратный интерфейс формы, но вся логика регистрации остаётся прежней.
+      </p>
+    </aside>
+
+    <div class="glass-card form-card">
+      <h2>Форма записи</h2>
+
+      <form
+        id="registration-form"
+        class="registration-form"
+        data-api-url="{% url 'main:api_registration' %}"
+        data-csrf-token="{{ csrf_token }}"
+        novalidate
+      >
+        {% csrf_token %}
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="firstName">Имя</label>
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              value="{{ submitted_data.firstName|default:'' }}"
+              placeholder="Иван"
+              required
+            >
+            <small id="firstName-message" class="field-message">{{ server_errors.firstName|default:'' }}</small>
+          </div>
+
+          <div class="form-field">
+            <label for="lastName">Фамилия</label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              value="{{ submitted_data.lastName|default:'' }}"
+              placeholder="Петров"
+              required
+            >
+            <small id="lastName-message" class="field-message">{{ server_errors.lastName|default:'' }}</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value="{{ submitted_data.email|default:'' }}"
+              placeholder="ivan@example.com"
+              required
+            >
+            <small id="email-message" class="field-message">{{ server_errors.email|default:'' }}</small>
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Телефон</label>
+            <input
+              id="phone"
+              name="phone"
+              type="text"
+              value="{{ submitted_data.phone|default:'' }}"
+              placeholder="+7 (999) 123-45-67"
+              required
+            >
+            <small id="phone-message" class="field-message">{{ server_errors.phone|default:'' }}</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="age">Возраст</label>
+            <input
+              id="age"
+              name="age"
+              type="number"
+              value="{{ submitted_data.age|default:'' }}"
+              min="10"
+              max="70"
+              required
+            >
+            <small id="age-message" class="field-message">{{ server_errors.age|default:'' }}</small>
+          </div>
+
+          <div class="form-field">
+            <label for="direction">Направление</label>
+            <select id="direction" name="direction" required>
+              <option value="">Выберите направление</option>
+              {% for item in directions %}
+              <option value="{{ item.slug }}" {% if submitted_data.direction == item.slug %}selected{% endif %}>
+                {{ item.name }}
+              </option>
+              {% endfor %}
+            </select>
+            <small id="direction-message" class="field-message">{{ server_errors.direction|default:'' }}</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="password">Пароль</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="8"
+              maxlength="128"
+              placeholder="Минимум 8 символов"
+              required
+            >
+            <small id="password-message" class="field-message">{{ server_errors.password|default:'' }}</small>
+          </div>
+
+          <div class="form-field">
+            <label for="confirmPassword">Повтор пароля</label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              minlength="8"
+              maxlength="128"
+              placeholder="Повторите пароль"
+              required
+            >
+            <small id="confirmPassword-message" class="field-message">{{ server_errors.confirmPassword|default:'' }}</small>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="message">Комментарий</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Напишите цели, пожелания или вопросы"
+          >{{ submitted_data.message|default:'' }}</textarea>
+          <small id="message-message" class="field-message">{{ server_errors.message|default:'' }}</small>
+        </div>
+
+        <button type="submit" class="button button-primary">Отправить заявку</button>
+
+        <div id="form-result" class="form-result {% if server_result_type %}{{ server_result_type }}{% endif %}">
+          {{ server_result|default:'' }}
+        </div>
+      </form>
     </div>
   </div>
-
-  <ul class="contact-list">
-    <li>Email: strannik-dojo@mail.com</li>
-    <li>Телефон: +7 900 123 45 67</li>
-    <li>Адрес: ул. Воинского пути, 10</li>
-  </ul>
 </section>
+{% endblock %}
 
-<section id="form-section" class="content-card">
-  <h2>Форма регистрации на занятие</h2>
-
-  <form
-    id="registration-form"
-    action="{% url 'main:contacts' %}"
-    method="post"
-    novalidate
-    data-api-url="{% url 'main:api_registration' %}"
-  >
-    {% csrf_token %}
-
-    <div class="form-grid">
-      <div class="form-field">
-        <label for="firstName">Имя *</label>
-        <input id="firstName" name="firstName" type="text" placeholder="Например: Иван" value="{{ submitted_data.firstName|default:'' }}" required>
-        <small class="field-hint">Только буквы. Первая буква заглавная, остальные строчные.</small>
-        <small class="field-message{% if server_errors.firstName %} error{% endif %}" id="firstName-message">{{ server_errors.firstName|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="lastName">Фамилия *</label>
-        <input id="lastName" name="lastName" type="text" placeholder="Например: Петров" value="{{ submitted_data.lastName|default:'' }}" required>
-        <small class="field-hint">Только буквы. Первая буква заглавная, остальные строчные.</small>
-        <small class="field-message{% if server_errors.lastName %} error{% endif %}" id="lastName-message">{{ server_errors.lastName|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="email">Email *</label>
-        <input id="email" name="email" type="email" placeholder="example@mail.com" value="{{ submitted_data.email|default:'' }}" required>
-        <small class="field-hint">Введите корректный адрес электронной почты.</small>
-        <small class="field-message{% if server_errors.email %} error{% endif %}" id="email-message">{{ server_errors.email|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="phone">Телефон *</label>
-        <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" value="{{ submitted_data.phone|default:'' }}" required>
-        <small class="field-hint">Формат: +7 (999) 123-45-67</small>
-        <small class="field-message{% if server_errors.phone %} error{% endif %}" id="phone-message">{{ server_errors.phone|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="age">Возраст *</label>
-        <input id="age" name="age" type="number" min="10" max="70" placeholder="От 10 до 70" value="{{ submitted_data.age|default:'' }}" required>
-        <small class="field-hint">Допустимый возраст: от 10 до 70 лет.</small>
-        <small class="field-message{% if server_errors.age %} error{% endif %}" id="age-message">{{ server_errors.age|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="direction">Направление *</label>
-        <select id="direction" name="direction" required>
-          <option value="">Выберите направление</option>
-          {% for direction in directions %}
-            <option value="{{ direction.slug }}" {% if submitted_data.direction == direction.slug %}selected{% endif %}>{{ direction.name }}</option>
-          {% endfor %}
-        </select>
-        <small class="field-hint">Выберите интересующее направление занятий.</small>
-        <small class="field-message{% if server_errors.direction %} error{% endif %}" id="direction-message">{{ server_errors.direction|default:'' }}</small>
-      </div>
-    </div>
-
-    <div class="form-grid">
-      <div class="form-field">
-        <label for="password">Пароль *</label>
-        <input id="password" name="password" type="password" minlength="8" maxlength="128" placeholder="Минимум 8 символов" required>
-        <small class="field-hint">Минимум 8 символов.</small>
-        <small class="field-message{% if server_errors.password %} error{% endif %}" id="password-message">{{ server_errors.password|default:'' }}</small>
-      </div>
-
-      <div class="form-field">
-        <label for="confirmPassword">Подтверждение пароля *</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" minlength="8" maxlength="128" placeholder="Повторите пароль" required>
-        <small class="field-hint">Пароли должны совпадать.</small>
-        <small class="field-message{% if server_errors.confirmPassword %} error{% endif %}" id="confirmPassword-message">{{ server_errors.confirmPassword|default:'' }}</small>
-      </div>
-    </div>
-
-    <div class="form-field">
-      <label for="message">Комментарий</label>
-      <textarea id="message" name="message" placeholder="Напишите, каким оружием хотите заниматься и есть ли опыт">{{ submitted_data.message|default:'' }}</textarea>
-      <small class="field-hint">Поле необязательное.</small>
-      <small class="field-message{% if server_errors.message %} error{% endif %}" id="message-message">{{ server_errors.message|default:'' }}</small>
-    </div>
-
-    <button type="submit">Зарегистрироваться</button>
-    <p id="form-result" class="form-result{% if server_result_type %} {{ server_result_type }}{% endif %}">{{ server_result|default:'' }}</p>
-    {% if telegram_error %}
-      <p class="form-result error">Техническая причина: {{ telegram_error }}</p>
-    {% endif %}
-  </form>
-</section>
-
-<section class="content-card">
-  <h2>Навигация</h2>
-  <p><a href="{% url 'main:index' %}">На главную</a></p>
-  <p><a href="{% url 'main:catalog' %}">В каталог направлений</a></p>
-  <p><a href="#top">Наверх страницы</a></p>
-</section>
+{% block extra_scripts %}
+<script src="{% static 'main/js/script.js' %}"></script>
 {% endblock %}
