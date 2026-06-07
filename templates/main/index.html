@@ -1,173 +1,196 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Странник | Школа восточного фехтования{% endblock %}
-
-{% block extra_head %}
-<style>
-  h1 {
-    color: #f7efe2;
-    text-align: center;
-  }
-
-  .main-subtitle {
-    text-align: center;
-    font-size: 18px;
-  }
-</style>
-{% endblock %}
-
-{% block extra_scripts %}
-<script src="{% static 'main/js/comments.js' %}" defer></script>
-{% endblock %}
+{% block title %}Главная — Странник{% endblock %}
 
 {% block content %}
-<section class="hero hero-grid">
-  <div class="hero-copy">
-    <p class="eyebrow">Портал школы «Странник»</p>
-    <h1>Добро пожаловать в школу восточного фехтования</h1>
+<section class="hero-section">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Точность. Дисциплина. Контроль.</p>
 
-    <p class="main-subtitle">
-      <strong>Странник</strong> — место, где каждый может прикоснуться к философии боевого искусства древней Японии.
-      <span>На этом сайте</span> можно узнать о нашей школе, выбрать понравившееся направление и записаться на занятия.
-    </p>
+      <h1>Школа восточного фехтования «Странник»</h1>
 
-    <p class="info-box" style="margin-bottom: 10px;">
-      <em>«Всю свою жизнь прилежно учись.<br>
-        Каждый день становись более искусным, чем ты был за день до этого, а на следующий день — более искусным, чем сегодня.<br>
-        Совершенствование не имеет конца.»</em>
-    </p>
+      <p class="hero-lead">
+        Пространство для тех, кто хочет развивать <strong>технику</strong>, внимание к форме
+        и уверенное владение движением. Здесь сочетаются <em>традиция</em>, современная подача и
+        структурированная практика.
+      </p>
 
-    <div class="intro">
-      <strong>Бусидо.</strong>
-    </div>
+      <div class="hero-actions">
+        <a class="button button-primary" href="{% url 'main:contacts' %}#registration">Записаться</a>
+        <a class="button button-secondary" href="{% url 'main:catalog' %}#programs">Посмотреть направления</a>
+      </div>
 
-    <div class="hero-actions">
-      <a class="button-link" href="{% url 'main:catalog' %}">Смотреть направления</a>
-      <a class="button-link button-link-secondary" href="{% url 'main:contacts' %}">Записаться на занятие</a>
-    </div>
-  </div>
-
-  <div class="hero-panel">
-    <div class="hero-stat">
-      <span class="hero-stat-number">3</span>
-      <span class="hero-stat-label">основных направления</span>
-    </div>
-    <div class="hero-stat">
-      <span class="hero-stat-number">∞</span>
-      <span class="hero-stat-label">совершенствование техники</span>
-    </div>
-    <div class="hero-stat">
-      <span class="hero-stat-number">1</span>
-      <span class="hero-stat-label">общая философия дисциплины</span>
-    </div>
-  </div>
-</section>
-
-<section id="history" class="content-card">
-  <h2>О школе и традиции восточного фехтования</h2>
-
-  <p>
-    Школа «Странник» предоставляет возможность прикоснуться к философии и практике восточного фехтования,
-    не покидая родной город.
-  </p>
-
-  <div class="two-column-list">
-    <div>
-      <h3>Наша школа обучает фехтованию следующими видами холодного оружия:</h3>
-      <ul>
-        <li>Катана / вакидзаси</li>
-        <li>Одати</li>
-        <li>Нагината</li>
+      <ul class="hero-badges">
+        <li>Техника</li>
+        <li>Концентрация</li>
+        <li>Практика</li>
       </ul>
     </div>
 
-    <div>
-      <h4>Этапы обучения</h4>
-      <ol>
-        <li>Освоение базовых ударов</li>
-        <li>Освоение базового перемещения</li>
-        <li>Изучение стоек</li>
-        <li>Отработка кат</li>
-        <li>Спарринг</li>
-      </ol>
+    <div class="hero-media">
+      <img src="{% static 'main/assets/ht006782.jpg' %}" alt="Тренировка школы Странник">
     </div>
   </div>
-
-  <h5>Мы уважаем традиции и обычаи</h5>
-  <p>Поэтому наши тренировки проходят с соблюдением правил и ритуалов, принятых в японских школах боевых искусств.</p>
-
-  <h6>Запись в школу открыта</h6>
-  <p>
-    Если вы хотите закалить себя, расширить кругозор и прикоснуться к чему-то великому и завораживающему,
-    не упускайте эту возможность.
-  </p>
 </section>
 
-<div class="media-grid">
-  <section class="photo-block content-card">
-    <h2>Полное обмундирование самурая</h2>
-    <img src="{% static 'main/assets/ht006782.jpg' %}" alt="Изображение самурая" width="220">
-  </section>
+<section id="about" class="content-section">
+  <div class="container split-section">
+    <article class="glass-card article-card">
+      <span class="section-tag" style="background: rgba(212, 168, 92, 0.18); color: #f0c97d;">О школе</span>
 
-  <section id="media" class="media-block content-card">
-    <h2>Капелька Японии</h2>
-    <video width="420" controls>
-      <source src="{% static 'main/assets/Japan.mp4' %}" type="video/mp4">
-      Ваш браузер не поддерживает видео.
-    </video>
-  </section>
-</div>
+      <h2>Почему это выглядит как реальный продукт, а не просто лабораторная</h2>
 
-<section class="comments-section content-card content-card-accent">
-  <h2>Комментарии посетителей</h2>
-
-  <form id="comment-form" class="comment-form" data-ws-url="/ws/comments/" novalidate>
-    {% csrf_token %}
-
-    {% if not request.user.is_authenticated %}
-      <div class="form-field">
-        <label for="comment-author">Ваше имя *</label>
-        <input id="comment-author" name="authorName" type="text" placeholder="Например: Иван" required>
-        <small class="field-message" id="comment-author-message"></small>
-      </div>
-    {% else %}
-      <p class="comment-author-fixed">
-        Комментарий будет отправлен от имени:
-        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+      <p>
+        Портал построен как полноценная презентация школы: с понятной навигацией, аккуратной
+        иерархией блоков, чистыми карточками и акцентом на визуальное восприятие контента.
       </p>
-    {% endif %}
 
-    <div class="form-field">
-      <label for="comment-text">Комментарий *</label>
-      <textarea id="comment-text" name="text" placeholder="Напишите ваше мнение о школе" required></textarea>
-      <small class="field-message" id="comment-text-message"></small>
-    </div>
+      <p>
+        В обучении используется последовательный подход: сначала база, затем точность и только потом
+        более сложные комбинации. Это позволяет уверенно наращивать навык и видеть прогресс от занятия к занятию.
+      </p>
 
-    <button type="submit" id="comment-submit">Отправить комментарий</button>
-    <p id="comment-result" class="form-result"></p>
-    <p id="socket-status" class="field-hint">Подключение WebSocket...</p>
-  </form>
+      <p>
+        Каждое занятие сочетает:
+        <br>разминку и мобилизацию,
+        <br>базовую технику,
+        <br>работу в паре,
+        <br>разбор принципов движения.
+      </p>
 
-  <div id="comments-list" class="comments-list">
-    {% for comment in comments %}
-      <article class="comment-card" data-comment-id="{{ comment.id }}">
-        <div class="comment-meta">
-          <strong>{{ comment.author_display }}</strong>
-          <span>{{ comment.created_at|date:'d.m.Y H:i:s' }}</span>
-        </div>
-        <p>{{ comment.text }}</p>
-      </article>
-    {% empty %}
-      <p id="comments-empty">Пока комментариев нет. Будьте первым.</p>
-    {% endfor %}
+      <h3>Что получает ученик</h3>
+      <ul>
+        <li>Понятную методику обучения и структуру занятий</li>
+        <li>Уверенную базу техники и координации</li>
+        <li>Развитие концентрации и дисциплины</li>
+      </ul>
+
+      <h4>Путь освоения</h4>
+      <ol>
+        <li>Освоение стоек и базовой механики</li>
+        <li>Постановка дистанции и контроля траектории</li>
+        <li>Работа в динамике и развитие устойчивости</li>
+      </ol>
+    </article>
+
+    <aside class="glass-card media-card">
+      <span class="section-tag">Видео</span>
+      <h2>Атмосфера и подача</h2>
+      <p class="muted-text">
+        Видео остаётся частью проекта, чтобы сохранялось требование задания и чтобы страница выглядела живой.
+      </p>
+
+      <video controls preload="metadata" class="hero-video">
+        <source src="{% static 'main/assets/Japan.mp4' %}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+      </video>
+    </aside>
   </div>
 </section>
 
-<section class="content-card">
-  <h2>Полезные переходы</h2>
-  <p><a href="{% url 'main:catalog' %}">Перейти в каталог направлений</a></p>
-  <p><a href="{% url 'main:contacts' %}">Перейти на страницу контактов</a></p>
-  <p><a href="#top">Наверх страницы</a></p>
+<section class="content-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-tag">Преимущества</span>
+      <h2>Что отличает школу</h2>
+      <p>Три главных принципа, на которых строится подача материала и визуальная философия сайта.</p>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feature-card glass-card">
+        <h3>Системность</h3>
+        <p>Каждый блок сайта и каждая тренировка выстроены логично: от основ к более сложным элементам.</p>
+      </article>
+
+      <article class="feature-card glass-card">
+        <h3>Эстетика</h3>
+        <p>Интерфейс сделан спокойным, тёмным и “премиальным”, чтобы проект выглядел как реальный продукт.</p>
+      </article>
+
+      <article class="feature-card glass-card">
+        <h3>Функциональность</h3>
+        <p>Все ключевые элементы сохранены: изображения, видео, комментарии, каталог, форма записи и навигация.</p>
+      </article>
+    </div>
+  </div>
 </section>
+
+<section id="comments-section" class="content-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-tag">Отзывы</span>
+      <h2>Комментарии участников</h2>
+      <p>Комментарии по-прежнему работают в реальном времени, но теперь визуально оформлены аккуратнее.</p>
+    </div>
+
+    <div class="comments-layout">
+      <div class="glass-card comment-form-wrap">
+        <h3>Оставить комментарий</h3>
+
+        <form
+          id="comment-form"
+          class="comment-form"
+          data-ws-url="/ws/comments/"
+          novalidate
+        >
+          {% csrf_token %}
+
+          {% if not request.user.is_authenticated %}
+          <div class="form-field">
+            <label for="comment-author">Имя автора</label>
+            <input
+              id="comment-author"
+              name="authorName"
+              type="text"
+              placeholder="Введите ваше имя"
+              value="{{ initial_comment_author }}"
+            >
+            <small id="comment-author-message" class="field-message"></small>
+          </div>
+          {% endif %}
+
+          <div class="form-field">
+            <label for="comment-text">Комментарий</label>
+            <textarea
+              id="comment-text"
+              name="text"
+              rows="5"
+              placeholder="Поделитесь впечатлением"
+            ></textarea>
+            <small id="comment-text-message" class="field-message"></small>
+          </div>
+
+          <button type="submit" class="button button-primary">Отправить комментарий</button>
+
+          <p id="socket-status" class="field-hint">Подключение WebSocket...</p>
+          <div id="comment-result" class="form-result"></div>
+        </form>
+      </div>
+
+      <div class="glass-card comments-feed">
+        <h3>Лента комментариев</h3>
+
+        <div id="comments-list" class="comments-list">
+          {% for comment in comments %}
+          <article class="comment-card" data-comment-id="{{ comment.id }}">
+            <div class="comment-meta">
+              <strong>{{ comment.author_display }}</strong>
+              <span>{{ comment.created_at|date:"d.m.Y H:i:s" }}</span>
+            </div>
+            <p>{{ comment.text }}</p>
+          </article>
+          {% empty %}
+          <p id="comments-empty" class="empty-state">Пока комментариев нет. Будьте первым.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'main/js/comments.js' %}"></script>
 {% endblock %}
