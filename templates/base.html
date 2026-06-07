@@ -2,57 +2,69 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Странник{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Странник{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    {% block extra_head %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  {% block extra_head %}{% endblock %}
 </head>
-<body id="top">
+<body>
+  <div class="site-shell">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="{% url 'main:index' %}" class="brand">
+          <span class="brand-mark">⚔</span>
+          <span class="brand-text">
+            <strong>Странник</strong>
+            <small>Школа восточного фехтования</small>
+          </span>
+        </a>
 
-<header class="site-header">
-    <div class="header-shell">
-        <div class="logo-wrap">
-            <div class="logo-mark">侍</div>
-            <div class="logo">Странник — школа восточного фехтования</div>
+        <nav class="main-nav" aria-label="Основное меню">
+          <ul class="nav-list">
+            <li><a href="{% url 'main:index' %}">Главная</a></li>
+            <li><a href="{% url 'main:catalog' %}">Каталог</a></li>
+            <li><a href="{% url 'main:contacts' %}">Контакты</a></li>
+
+            <li class="nav-dropdown">
+              <button class="nav-dropdown-toggle" type="button">Разделы</button>
+              <div class="nav-dropdown-menu">
+                <a href="{% url 'main:index' %}#about">О школе</a>
+                <a href="{% url 'main:index' %}#comments-section">Комментарии</a>
+                <a href="{% url 'main:catalog' %}#programs">Направления</a>
+                <a href="{% url 'main:contacts' %}#registration">Запись</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <h4>Странник</h4>
+          <p>Современный портал школы восточного фехтования: дисциплина, техника, эстетика движения.</p>
         </div>
 
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon" aria-label="Открыть меню">☰</label>
+        <div class="footer-links">
+          <a href="{% url 'main:index' %}">Главная</a>
+          <a href="{% url 'main:catalog' %}">Каталог</a>
+          <a href="{% url 'main:contacts' %}">Контакты</a>
+        </div>
+      </div>
+    </footer>
+  </div>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="{% url 'main:index' %}">Главная</a></li>
-                <li><a href="{% url 'main:catalog' %}">Каталог</a></li>
-                <li><a href="{% url 'main:contacts' %}">Контакты</a></li>
-                {% if request.user.is_authenticated %}
-                    <li><span class="user-badge">Вы вошли как: {{ request.user.get_full_name|default:request.user.username }}</span></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</header>
-
-<div class="page-glow page-glow-left"></div>
-<div class="page-glow page-glow-right"></div>
-
-<main class="site-main">
-    {% block content %}{% endblock %}
-</main>
-
-<footer class="site-footer">
-    <div class="footer-shell">
-        <p>© 2026 Странник — школа восточного фехтования</p>
-        <p>Традиция, дисциплина, развитие.</p>
-    </div>
-</footer>
-
-{% block extra_scripts %}{% endblock %}
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>
