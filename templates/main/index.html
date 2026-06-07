@@ -6,7 +6,7 @@
 {% block extra_head %}
 <style>
   h1 {
-    color: #2f4f4f;
+    color: #f7efe2;
     text-align: center;
   }
 
@@ -22,26 +22,49 @@
 {% endblock %}
 
 {% block content %}
-<section class="hero">
-  <h1>Добро пожаловать в школу восточного фехтования</h1>
+<section class="hero hero-grid">
+  <div class="hero-copy">
+    <p class="eyebrow">Портал школы «Странник»</p>
+    <h1>Добро пожаловать в школу восточного фехтования</h1>
 
-  <p class="main-subtitle">
-    <strong>Странник</strong> — место, где каждый может прикоснуться к философии боевого искусства древней Японии.
-    <span>На этом сайте</span> можно узнать о нашей школе, выбрать понравившееся направление и записаться на занятия.
-  </p>
+    <p class="main-subtitle">
+      <strong>Странник</strong> — место, где каждый может прикоснуться к философии боевого искусства древней Японии.
+      <span>На этом сайте</span> можно узнать о нашей школе, выбрать понравившееся направление и записаться на занятия.
+    </p>
 
-  <p class="info-box" style="margin-bottom: 10px;">
-    <em>«Всю свою жизнь прилежно учись.<br>
-      Каждый день становись более искусным, чем ты был за день до этого, а на следующий день — более искусным, чем сегодня.<br>
-      Совершенствование не имеет конца.»</em>
-  </p>
+    <p class="info-box" style="margin-bottom: 10px;">
+      <em>«Всю свою жизнь прилежно учись.<br>
+        Каждый день становись более искусным, чем ты был за день до этого, а на следующий день — более искусным, чем сегодня.<br>
+        Совершенствование не имеет конца.»</em>
+    </p>
 
-  <div class="intro">
-    <strong>Бусидо.</strong>
+    <div class="intro">
+      <strong>Бусидо.</strong>
+    </div>
+
+    <div class="hero-actions">
+      <a class="button-link" href="{% url 'main:catalog' %}">Смотреть направления</a>
+      <a class="button-link button-link-secondary" href="{% url 'main:contacts' %}">Записаться на занятие</a>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <div class="hero-stat">
+      <span class="hero-stat-number">3</span>
+      <span class="hero-stat-label">основных направления</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-number">∞</span>
+      <span class="hero-stat-label">совершенствование техники</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-number">1</span>
+      <span class="hero-stat-label">общая философия дисциплины</span>
+    </div>
   </div>
 </section>
 
-<section id="history">
+<section id="history" class="content-card">
   <h2>О школе и традиции восточного фехтования</h2>
 
   <p>
@@ -49,21 +72,27 @@
     не покидая родной город.
   </p>
 
-  <h3>Наша школа обучает фехтованию следующими видами холодного оружия:</h3>
-  <ul>
-    <li>Катана / вакидзаси</li>
-    <li>Одати</li>
-    <li>Нагината</li>
-  </ul>
+  <div class="two-column-list">
+    <div>
+      <h3>Наша школа обучает фехтованию следующими видами холодного оружия:</h3>
+      <ul>
+        <li>Катана / вакидзаси</li>
+        <li>Одати</li>
+        <li>Нагината</li>
+      </ul>
+    </div>
 
-  <h4>Этапы обучения</h4>
-  <ol>
-    <li>Освоение базовых ударов</li>
-    <li>Освоение базового перемещения</li>
-    <li>Изучение стоек</li>
-    <li>Отработка кат</li>
-    <li>Спарринг</li>
-  </ol>
+    <div>
+      <h4>Этапы обучения</h4>
+      <ol>
+        <li>Освоение базовых ударов</li>
+        <li>Освоение базового перемещения</li>
+        <li>Изучение стоек</li>
+        <li>Отработка кат</li>
+        <li>Спарринг</li>
+      </ol>
+    </div>
+  </div>
 
   <h5>Мы уважаем традиции и обычаи</h5>
   <p>Поэтому наши тренировки проходят с соблюдением правил и ритуалов, принятых в японских школах боевых искусств.</p>
@@ -75,25 +104,23 @@
   </p>
 </section>
 
-<section class="photo-block">
-  <h2>Полное обмундирование самурая</h2>
-  <img src="{% static 'main/assets/ht006782.jpg' %}" alt="Изображение самурая" width="220">
-</section>
+<div class="media-grid">
+  <section class="photo-block content-card">
+    <h2>Полное обмундирование самурая</h2>
+    <img src="{% static 'main/assets/ht006782.jpg' %}" alt="Изображение самурая" width="220">
+  </section>
 
-<section id="media" class="media-block">
-  <h2>Капелька Японии</h2>
-  <video width="420" controls>
-    <source src="{% static 'main/assets/Japan.mp4' %}" type="video/mp4">
-    Ваш браузер не поддерживает видео.
-  </video>
-</section>
+  <section id="media" class="media-block content-card">
+    <h2>Капелька Японии</h2>
+    <video width="420" controls>
+      <source src="{% static 'main/assets/Japan.mp4' %}" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+  </section>
+</div>
 
-<section class="comments-section">
+<section class="comments-section content-card content-card-accent">
   <h2>Комментарии посетителей</h2>
-  <p>
-    Эта форма отправляет комментарий через <strong>WebSocket</strong> в формате JSON без перезагрузки страницы.
-    Новые комментарии мгновенно появляются у всех открытых клиентов без F5.
-  </p>
 
   <form id="comment-form" class="comment-form" data-ws-url="/ws/comments/" novalidate>
     {% csrf_token %}
@@ -137,7 +164,7 @@
   </div>
 </section>
 
-<section>
+<section class="content-card">
   <h2>Полезные переходы</h2>
   <p><a href="{% url 'main:catalog' %}">Перейти в каталог направлений</a></p>
   <p><a href="{% url 'main:contacts' %}">Перейти на страницу контактов</a></p>
